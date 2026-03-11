@@ -32,6 +32,7 @@ def main():
     from urllib.request import urlopen
     from bs4 import BeautifulSoup
     import ssl
+    import re
 
     context = ssl.create_default_context()
     context.check_hostname = False
@@ -39,13 +40,12 @@ def main():
 
     url = input("Enter url:")
     html = urlopen(url, context=context).read()
-    soup = BeautifulSoup(html, "html.parser")
-    
-    anchorTags = soup("a")
+    parser = BeautifulSoup(html, "html.parser")
 
-    for tag in anchorTags:
-        print(tag)
+    findAnchorTag = parser("a")[2].get("href",None)
 
+    findName = re.findall(r"\.*?by_(.*?)\.",findAnchorTag)
+    print(findName)
 
 
 if __name__ == "__main__":
