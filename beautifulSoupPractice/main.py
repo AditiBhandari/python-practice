@@ -39,14 +39,19 @@ def main():
     context.verify_mode = ssl.CERT_NONE
 
     url = input("Enter url:")
-    html = urlopen(url, context=context).read()
-    parser = BeautifulSoup(html, "html.parser")
+    count = 0
 
-    findAnchorTag = parser("a")[2].get("href",None)
+    while count < 7:
+        html = urlopen(url, context=context).read()
+        parser = BeautifulSoup(html, "html.parser")
 
-    findName = re.findall(r"\.*?by_(.*?)\.",findAnchorTag)
-    print(findName)
+        findAnchorTag = parser("a")[17].get("href",None)
 
+        findName = re.findall(r"\.*?by_(.*?)\.",findAnchorTag)
+        url = "http://py4e-data.dr-chuck.net/known_by_" + findName[0]+".html"
+        print(findName)
+        print(count)
+        count = count + 1
 
 if __name__ == "__main__":
     main()
